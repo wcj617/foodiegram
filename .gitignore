@@ -1,5 +1,2 @@
 # ignore virtual env files
 .venv
-
-# ignore database table file
-db.sqlite3
