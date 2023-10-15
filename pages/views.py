@@ -1,7 +1,9 @@
 from django.views.generic import TemplateView
-from .models import Food
-from django.http import JsonResponse
+from .models import Food, Ingredient
+from django.http import JsonResponse, HttpResponse
 from django.views import View
+
+import csv
 
 
 class HomePageView(TemplateView):
@@ -12,7 +14,7 @@ class HomePageView(TemplateView):
 class FoodAutocomplete(View):
     def get(self, request):
         query = request.GET.get('term', '')
-        foods = Food.objects.filter(food_name__icontains=query)[:10]
+        foods = Food.objects.filter(name__icontains=query)[:10]
         results = ["aaaaa","bbbbb","ccccc"]#[food.name for food in foods]
         return JsonResponse(results, safe=False)
 
@@ -31,3 +33,33 @@ def image_upload_view(request):
     else:
         form = ImageForm()
         return render(request, 'upload.html', {'form': form})
+
+# CSV file containing the data
+csv_file = '/Users/henrypark/foodiegram/pages/test_data/food_data.csv'
+
+def load_test_data(request):
+    # Open and read the CSV file
+    with open(csv_file, 'r') as csvfile:
+        csvreader = csv.reader(csvfile)
+        next(csvreader)  # Skip the header row
+
+        # Insert data from the CSV into the database
+        for row in csvreader:
+            name, ingredients, location = row
+
+            # Create a new Food instance
+            food = Food(food_name=name, location=location)
+            food.save()
+
+            # Split ingredients into a list
+            ingredients_list = ingredients.split(', ')
+
+            # Create and associate Ingredient instances with the Food
+            for ingredient_name in ingredients_list:
+                ingredient, created = Ingredient.objects.get_or_create(name=ingredient_name)
+                food.ingredients.add(ingredient)
+    
+    # Close the CSV file
+    csvfile.close()
+
+    return JsonResponse({"data_load": "successful"})

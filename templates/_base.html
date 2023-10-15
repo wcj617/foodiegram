@@ -22,6 +22,11 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/map.css' %}" />
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet/dist/leaflet.css" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js" crossorigin=""></script>
+
   {% endblock %}
 </head>
 
@@ -38,6 +43,7 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="{% url 'home' %}" class="nav-link px-2 link-secondary">Home</a></li>
           <li><a href="upload" class="nav-link px-2 link-secondary">Upload</a></li>
+          <li><a href="load_data" class="nav-link px-2 link-secondary">Load Data</a></li>
         </ul>
 
         <div class="dropdown text-end">
@@ -63,6 +69,11 @@
       </div>
     </div>
   </header>
+
+
+  <div id="map"></div>
+  <script src="{% static 'js/map.js' %}" defer></script>
+
 
   <div class="container">
     {% block content %}
