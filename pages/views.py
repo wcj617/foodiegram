@@ -24,7 +24,6 @@ def image_upload_view(request):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            print("TEST")
             form.save()
             # Get the current instance object to display in the template
             img_obj = form.instance
