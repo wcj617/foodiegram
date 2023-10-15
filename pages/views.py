@@ -5,6 +5,8 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from .forms import ImageForm, SearchForm
 from Levenshtein import distance
+import csv
+import os
 
 def get_close_matches(user_input):
     all_ingredients = Ingredient.objects.all()
@@ -69,3 +71,34 @@ def search_results(request):
                 message = f"No foods found with the ingredients '{', '.join(ingredient_list)}' or similar."
 
     return render(request, 'pages/home.html', {'form': form, 'foods': foods, 'message': message})
+
+# CSV file containing the data
+csv_file = os.getcwd() + '/pages/test_data/food_data.csv'
+
+def load_test_data(request):
+    # Open and read the CSV file
+    with open(csv_file, 'r') as csvfile:
+        csvreader = csv.reader(csvfile)
+        next(csvreader)  # Skip the header row
+
+        # Insert data from the CSV into the database
+        for row in csvreader:
+            name, ingredients, location = row
+
+            # Create a new Food instance
+            food = Food(food_name=name, location=location)
+            food.save()
+
+            # Split ingredients into a list
+            ingredients_list = ingredients.split(', ')
+
+            # Create and associate Ingredient instances with the Food
+            for ingredient_name in ingredients_list:
+                ingredient, created = Ingredient.objects.get_or_create(name=ingredient_name)
+                food.ingredients.add(ingredient)
+    
+    # Close the CSV file
+    csvfile.close()
+
+    return JsonResponse({"data_load": "successful"})
+
