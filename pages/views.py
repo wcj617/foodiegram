@@ -1,10 +1,22 @@
-from django.views.generic import TemplateView
 from .models import Food, Ingredient
 from django.http import JsonResponse, HttpResponse
 from django.views import View
-
+from django.views.generic import TemplateView
+from django.shortcuts import render
+from .forms import ImageForm, SearchForm
+from Levenshtein import distance
 import csv
 
+
+def get_close_matches(user_input):
+    all_ingredients = Ingredient.objects.all()
+    close_matches = []
+
+    for ingredient in all_ingredients:
+        if distance(user_input, ingredient.name) < 3:  # Here 3 is the max allowed distance
+            close_matches.append(ingredient)
+
+    return close_matches
 
 class HomePageView(TemplateView):
     template_name = "pages/home.html"
@@ -17,9 +29,6 @@ class FoodAutocomplete(View):
         foods = Food.objects.filter(name__icontains=query)[:10]
         results = ["aaaaa","bbbbb","ccccc"]#[food.name for food in foods]
         return JsonResponse(results, safe=False)
-
-from django.shortcuts import render
-from .forms import ImageForm
 
 def image_upload_view(request):
     """Process images uploaded by users"""
@@ -63,3 +72,32 @@ def load_test_data(request):
     csvfile.close()
 
     return JsonResponse({"data_load": "successful"})
+
+def search_results(request):
+    form = SearchForm(request.GET)
+    foods = None
+    message = None
+
+    if form.is_valid():
+        search_ingredients = form.cleaned_data['ingredient']
+
+        if not search_ingredients:
+            message = "Please enter an ingredient to search."
+        else:
+            # Split the query by commas and strip whitespaces
+            ingredient_list = [i.strip() for i in search_ingredients.split(",")]
+
+            # Initialize an empty query set to hold foods that match any of the ingredients
+            foods = Food.objects.none()
+
+            for search_ingredient in ingredient_list:
+                similar_ingredients = get_close_matches(search_ingredient)
+
+                if similar_ingredients:
+                    # Union operation to add foods that match the current ingredient
+                    foods = foods | Food.objects.filter(ingredients__in=similar_ingredients).distinct()
+
+            if not foods.exists():
+                message = f"No foods found with the ingredients '{', '.join(ingredient_list)}' or similar."
+
+    return render(request, 'pages/home.html', {'form': form, 'foods': foods, 'message': message})
