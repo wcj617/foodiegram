@@ -12,7 +12,7 @@ class HomePageView(TemplateView):
 class FoodAutocomplete(View):
     def get(self, request):
         query = request.GET.get('term', '')
-        foods = Food.objects.filter(name__icontains=query)[:10]
+        foods = Food.objects.filter(food_name__icontains=query)[:10]
         results = ["aaaaa","bbbbb","ccccc"]#[food.name for food in foods]
         return JsonResponse(results, safe=False)
 
