@@ -13,3 +13,6 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ('email', 'username',)
+
+class SearchForm(forms.Form):
+    ingredient = forms.CharField(label='Search by Ingredient', max_length=100)

@@ -4,7 +4,23 @@
 {% block title %}Home page{% endblock title %}
 
 {% block content %}
-<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+<!--div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
   <p class="lead">This is Foodiegram!</p>
+</div-->
+
+<div class="search__container">
+  <p class="search__title">
+    FOODIEGRAM SEARCH
+  </p>
+  <input class="search__input" type="text" id="search" name="term", placeholder="EVERY WORD TO ITS TASTE">
 </div>
+
+<script>
+  $(function() {
+      $("#search").autocomplete({
+          source: "{% url 'food-autocomplete' %}",
+          minLength: 2, // Minimum characters before triggering autocomplete
+      });
+  });
+</script>
 {% endblock content %}
