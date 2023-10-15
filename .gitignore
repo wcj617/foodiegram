@@ -1,2 +1,7 @@
 # ignore virtual env files
 .venv
+db.sqlite3
+.idea
+__pycache__/
+*.pyc
+*.pyo
