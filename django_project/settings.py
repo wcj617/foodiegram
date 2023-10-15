@@ -15,6 +15,8 @@ env = environ.Env(
 environ.Env.read_env()
 GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
 
+RAPID_API_KEY = env('RAPID_API_KEY')
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 SECRET_KEY = "django-insecure-0peo@#x9jur3!h$ryje!$879xww8y1y66jx!%*#ymhg&jkozs2"
 

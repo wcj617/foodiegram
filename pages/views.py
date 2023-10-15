@@ -5,8 +5,12 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from .forms import ImageForm, SearchForm
 from Levenshtein import distance
+from django.conf import settings
 import csv
 import os
+import requests
+import json
+
 
 def get_close_matches(user_input):
     all_ingredients = Ingredient.objects.all()
@@ -49,6 +53,7 @@ def search_results(request):
     message = None
     locations = set()
 
+    context = {}
 
     if form.is_valid():
         search_ingredients = form.cleaned_data['ingredient']
@@ -73,11 +78,11 @@ def search_results(request):
                     for food in matching_foods:
                         locations.add(food.location)
 
-
-
             if not foods.exists():
                 message = f"No foods found with the ingredients '{', '.join(ingredient_list)}' or similar."
 
+        context['data'] = json.dumps(get_cordinates(locations))
+        return render(request, 'pages/home.html', context)
     return render(request, 'pages/home.html', {'form': form, 'foods': foods, 'message': message})
 
 # CSV file containing the data
@@ -109,4 +114,22 @@ def load_test_data(request):
     csvfile.close()
 
     return JsonResponse({"data_load": "successful"})
+
+def get_cordinates(country_names):
+
+
+    headers = {
+        'X-RapidAPI-Key': settings.RAPID_API_KEY,
+        'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+    }
+
+    coordinates = []
+
+    for country in country_names:
+        url = "https://weatherapi-com.p.rapidapi.com/astronomy.json?q=" + country
+        res = requests.get(url, headers=headers).json()
+        coordinates.append({'title': country, 'latitude': res['location']['lat'], 'longitude': res['location']['lon']})
+
+    return coordinates
+
 

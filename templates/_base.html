@@ -92,8 +92,69 @@
       // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
       // Add other bootstrap parameters as needed, using camel case.
     });
+
   </script>
-  <script src="{% static 'js/map.js' %}"></script>
+      <script>
+          let map;
+
+          async function initMap() {
+              const { Map, infoWindow } = await google.maps.importLibrary("maps");
+
+
+              map = new Map(document.getElementById("map"), {
+                  center: { lat: 12.077, lng: 166.606 },
+                  zoom: 1,
+              });
+
+              map.setOptions({ minZoom: 1.8, maxZoom: 10 });
+
+              var locations = {{ data | safe }}
+
+              locations.forEach(function (location, i) {
+              var marker = new google.maps.Marker({
+                      position: { lat: location.latitude, lng: location.longitude },
+                      map: map,
+                      title: location.country,
+                      label: `${i + 1}`
+                  });
+
+                  marker.addListener("click", () => {
+                      infoWindow.close();
+                      infoWindow.setContent(marker.getTitle());
+                      infoWindow.open(marker.getMap(), marker);
+                  });
+              });
+
+
+          }
+
+          initMap();
+
+      {#let map;#}
+      {#data = {}#}
+      {##}
+      {#    async function initMap(coordinates) {#}
+      {#        const { Map } = await google.maps.importLibrary("maps");#}
+      {##}
+      {#        map = new Map(document.getElementById("map"), {#}
+      {#            center: { lat: -34.397, lng: 150.644 },#}
+      {#            zoom: 12,#}
+      {#        });#}
+      {##}
+      {#        await coordinates.forEach(function (location) {#}
+      {#            new google.maps.Marker({#}
+      {#                position: { lat: location.latitude, lng: location.longitude },#}
+      {#                map: map,#}
+      {#                title: location.country#}
+      {#            })#}
+      {#        })#}
+      {##}
+      {#        return map#}
+      {#    }#}
+      {##}
+      {#    var countries = "{{ data }}"#}
+      {#    initMap(data)#}
+      </script>
 
   {% endblock javascript %}
 
