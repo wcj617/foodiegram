@@ -42,6 +42,8 @@ def search_results(request):
     form = SearchForm(request.GET)
     foods = None
     message = None
+    locations = set()
+
 
     if form.is_valid():
         search_ingredients = form.cleaned_data['ingredient']
@@ -60,7 +62,13 @@ def search_results(request):
 
                 if similar_ingredients:
                     # Union operation to add foods that match the current ingredient
-                    foods = foods | Food.objects.filter(ingredients__in=similar_ingredients).distinct()
+                    matching_foods = Food.objects.filter(ingredients__in=similar_ingredients).distinct()
+                    foods = foods | matching_foods
+
+                    for food in matching_foods:
+                        locations.add(food.location)
+
+
 
             if not foods.exists():
                 message = f"No foods found with the ingredients '{', '.join(ingredient_list)}' or similar."
