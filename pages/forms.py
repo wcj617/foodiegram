@@ -6,3 +6,7 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ('title', 'image')
+
+
+class SearchForm(forms.Form):
+    ingredient = forms.CharField(max_length=100)
