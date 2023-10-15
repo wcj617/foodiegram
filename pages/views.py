@@ -1,8 +1,9 @@
 from .models import Food, Ingredient
 from django.http import JsonResponse
 from django.views import View
+from django.views.generic import TemplateView
 from django.shortcuts import render
-from .forms import ImageForm
+from .forms import ImageForm, SearchForm
 from Levenshtein import distance
 
 def get_close_matches(user_input):
