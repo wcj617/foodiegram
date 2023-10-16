@@ -1,0 +1,119 @@
+@import "compass/css3";
+
+header {
+    background-color:#f9f9f9
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Style form labels */
+label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Style form fields */
+input[type="text"],
+input[type="file"] {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Styling the submit button */
+.form-container button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Change the button color as needed */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Styling the success message */
+.success_message {
+    color: #503697; /* Green color for success message */
+    margin-top: 10px;
+    text-align:center;
+}
+
+img {
+    margin: auto;
+    width: 50%;
+    max-width: 200px;
+    max-height: 150px;
+    display: block;
+    margin-top: 10px;
+}
+
+/* ===================== BASIC STYLING ===================== */
+
+* {
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-weight: 300;
+  height: 100%;
+  background: #ffaad6;
+  color: #000000;
+  font-size: 16px;
+  overflow: hidden;
+  background: -moz-linear-gradient(top, #ffaad6 0%, #dd55ff 100%);
+  /* FF3.6+ */
+  
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffaad6), color-stop(100%, #dd55ff));
+  /* Chrome,Safari4+ */
+  
+  background: -webkit-linear-gradient(top, #ffaad6 0%, #dd55ff 100%);
+  /* Chrome10+,Safari5.1+ */
+  
+  background: -o-linear-gradient(top, #ffaad6 0%, #dd55ff 100%);
+  /* Opera 11.10+ */
+  
+  background: -ms-linear-gradient(top, #ffaad6 0%, #dd55ff 100%);
+  /* IE10+ */
+  
+  background: linear-gradient(to bottom, #ffaad6 0%, #dd55ff 100%);
+  /* W3C */
+  
+}
+
+h1 {
+  text-align: center;
+  margin: 50px auto;
+  font-weight: 100;
+}
+
+label {
+  font-weight: 500;
+  display: block;
+  margin: 4px 0;
+  text-transform: uppercase;
+  font-size: 13px;
+  overflow: hidden;
+  
+  span {
+    float: right;
+    text-transform: none;
+    font-weight: 200;
+    line-height: 1em;
+    font-style: italic;
+    opacity: 0.8;
+  }
+}

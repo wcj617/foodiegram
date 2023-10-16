@@ -86,3 +86,62 @@ body {
     background-position: 100% center;
   }
 }
+
+header {
+  background-color:#f9f9f9
+}
+
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Style form fields */
+input[type="text"],
+input[type="file"] {
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Styling the submit button */
+.form-container button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff; /* Change the button color as needed */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Styling the success message */
+.success_message {
+  color: #503697; /* Green color for success message */
+  margin-top: 30px;
+  text-align:center;
+}
+
+.uploaded {
+  margin: auto;
+  width: 50%;
+  max-width: 200px;
+  max-height: 200px;
+  display: block;
+  margin-top: 10px;
+}
+
+h1 {
+  text-align: center;
+  margin: 50px auto;
+  font-weight: 500;
+  font-size: 22px;
+  color: #ff00aa;
+}
